@@ -8,6 +8,6 @@ namespace DailyTaskRecorder.Domain.Models.Task
 {
     public interface ITaskFactory
     {
-        Task Create(TaskName name, TaskId id, CategoryName categoryName);
+        Task Create(TaskName name, CategoryName categoryName);
     }
 }

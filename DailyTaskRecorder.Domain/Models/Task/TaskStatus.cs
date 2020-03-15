@@ -13,6 +13,25 @@ namespace DailyTaskRecorder.Domain.Models.Task
         Completed = 3
     }
 
+    public class TaskStatusEnumUtil
+    {
+        static public Em_TaskStatus ConvEnum(string statusString)
+        {
+            if (statusString == Em_TaskStatus.Waiting.ToString())
+            {
+                return Em_TaskStatus.Waiting;
+            }
+            else if (statusString == Em_TaskStatus.Working.ToString())
+            {
+                return Em_TaskStatus.Working;
+            }
+            else
+            {
+                return Em_TaskStatus.Completed;
+            }
+        }
+    }
+
     /// <summary>
     /// 
     /// </summary>
