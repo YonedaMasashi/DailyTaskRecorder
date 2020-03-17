@@ -15,7 +15,7 @@ namespace DailyTaskRecorder.Domain.Models.Task
 
     public class TaskStatusEnumUtil
     {
-        static public Em_TaskStatus ConvEnum(string statusString)
+        public static Em_TaskStatus ConvEnum(string statusString)
         {
             if (statusString == Em_TaskStatus.Waiting.ToString())
             {
@@ -29,6 +29,11 @@ namespace DailyTaskRecorder.Domain.Models.Task
             {
                 return Em_TaskStatus.Completed;
             }
+        }
+
+        public static List<string> GetEnumValueList() {
+            string[] statusList = Enum.GetNames(typeof(Em_TaskStatus));
+            return statusList.ToList();
         }
     }
 

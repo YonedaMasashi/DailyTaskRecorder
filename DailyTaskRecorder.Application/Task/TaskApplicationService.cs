@@ -7,7 +7,7 @@ using System.Transactions;
 
 namespace DailyTaskRecorder.Application.Task
 {
-    class TaskApplicationService
+    public class TaskApplicationService
     {
         private readonly ITaskFactory taskFactory;
         private readonly ITaskRepository taskRepository;
