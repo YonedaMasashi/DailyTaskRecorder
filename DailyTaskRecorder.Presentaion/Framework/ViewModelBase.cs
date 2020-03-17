@@ -12,6 +12,7 @@ namespace DailyTaskRecorder.Presentaion.Framework
     /// <summary>
     /// ViewModelの基底クラス
     /// INotifyPropertyChanged と IDataErrorInfo を実装する
+    /// https://qiita.com/tricogimmick/items/f07ef53dea817d198475
     /// </summary>
     public abstract class ViewModelBase : INotifyPropertyChanged, IDataErrorInfo
     {
