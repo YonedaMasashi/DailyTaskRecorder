@@ -35,7 +35,14 @@ namespace DailyTaskRecorder.Application.Task
 
                 transaction.Complete();
 
-                return new TaskCreateResult(task.TaskId.Value);
+                return new TaskCreateResult(task);
+            }
+        }
+
+
+        public List<Domain.Models.Task.Task> FindAll() {
+            using (var transaction = new TransactionScope()) {
+                return taskRepository.FindAll();
             }
         }
     }

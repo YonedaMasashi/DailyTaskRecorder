@@ -1,5 +1,4 @@
 ﻿using DailyTaskRecorder.Application.Task;
-using DailyTaskRecorder.Application.Task.Create;
 using DailyTaskRecorder.Domain.Models.Task;
 using DailyTaskRecorder.Presentaion.Converter;
 using DailyTaskRecorder.Presentaion.ViewModel;
@@ -11,12 +10,12 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace DailyTaskRecorder.Presentaion.Command {
-    class AddTaskCommand : ICommand {
+    class FindAllTaskCommand : ICommand {
 
         private readonly ITaskFactory taskFactory;
         private readonly ITaskRepository taskRepository;
 
-        public AddTaskCommand(ITaskFactory taskFactory, ITaskRepository taskRepository) {
+        public FindAllTaskCommand(ITaskFactory taskFactory, ITaskRepository taskRepository) {
             this.taskFactory = taskFactory;
             this.taskRepository = taskRepository;
         }
@@ -34,13 +33,15 @@ namespace DailyTaskRecorder.Presentaion.Command {
         public void Execute(object parameter) {
             TaskListViewModel vm = parameter as TaskListViewModel;
 
-            var command = new TaskCreateCommand(vm.InputTaskName, vm.InputTaskName);
             var service = new TaskApplicationService(taskFactory, taskRepository);
 
-            var taskRslt = service.Create(command);
+            var taskList = service.FindAll();
 
-            var taskData = DomainVMConverter.ConvTaskDomainToVM(taskRslt.Task);
-            vm.TaskDataList.Add(taskData);
+            vm.TaskDataList.Clear();
+            foreach (var elem in taskList) {
+                var taskData = DomainVMConverter.ConvTaskDomainToVM(elem);
+                vm.TaskDataList.Add(taskData);
+            }
 
         }
     }

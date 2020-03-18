@@ -6,11 +6,11 @@ namespace DailyTaskRecorder.Application.Task.Create
 {
     public class TaskCreateResult
     {
-        public TaskCreateResult(int taskId)
+        public TaskCreateResult(Domain.Models.Task.Task task)
         {
-            TaskId = taskId;
+            Task = task;
         }
 
-        public int TaskId { get; }
+        public Domain.Models.Task.Task Task { get; }
     }
 }

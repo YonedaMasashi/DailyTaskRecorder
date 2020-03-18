@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DailyTaskRecorder.Presentaion.ViewModel
 {
-    class TaskData
+    public class TaskData
     {
         public int TaskId { get; set; }
         public string TaskName { get; set; }

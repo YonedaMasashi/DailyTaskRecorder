@@ -60,6 +60,7 @@ namespace DailyTaskRecorder.Presentaion.ViewModel
 
         #region << コマンド >>
         public ICommand AddTaskCommand { get; private set; }
+        public ICommand FindAllTaskCommand { get; private set; }
         #endregion
 
         public TaskListViewModel(ITaskFactory taskFactory, ITaskRepository taskRepository)
@@ -68,6 +69,7 @@ namespace DailyTaskRecorder.Presentaion.ViewModel
             DispStatusList = new ObservableCollection<string>(TaskStatusEnumUtil.GetEnumValueList());
 
             AddTaskCommand = new AddTaskCommand(taskFactory, taskRepository);
+            FindAllTaskCommand = new FindAllTaskCommand(taskFactory, taskRepository);
         }
     }
 }

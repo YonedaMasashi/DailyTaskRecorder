@@ -8,6 +8,7 @@ namespace DailyTaskRecorder.Domain.Models.Task
 {
     public interface ITaskRepository
     {
+        List<Task> FindAll();
         Task Find(TaskId id);
         Task Find(TaskName name);
         void Save(Task task);

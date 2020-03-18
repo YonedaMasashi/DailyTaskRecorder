@@ -1,4 +1,5 @@
 ﻿using DailyTaskRecorder.Presentaion.View;
+using DailyTaskRecorder.SqliteCreator;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -15,7 +16,7 @@ namespace DailyTaskRecorder {
 
         [STAThread]
         public static void Main() {
-            TaskListWindow window = new TaskListWindow();
+            Window window = SqliteInitializer.Create();
             window.ShowDialog();
         }
     }
