@@ -10,7 +10,7 @@
     x:Name="endWorkWindow"
     Title="End Work"
     Width="300"
-    Height="150"
+    Height="160"
     mc:Ignorable="d">
 
     <Window.Resources>
@@ -58,7 +58,7 @@
                             <!--  Window の DialogResult を設定して、Window を閉じる  -->
                             <ei:ChangePropertyAction
                                 PropertyName="DialogResult"
-                                TargetObject="{Binding ElementName=EndPomoWindow}"
+                                TargetObject="{Binding ElementName=endWorkWindow}"
                                 Value="True" />
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
@@ -75,7 +75,7 @@
                             <!--  Window の DialogResult を設定して、Window を閉じる  -->
                             <ei:ChangePropertyAction
                                 PropertyName="DialogResult"
-                                TargetObject="{Binding ElementName=EndPomoWindow}"
+                                TargetObject="{Binding ElementName=endWorkWindow}"
                                 Value="True" />
                         </i:EventTrigger>
                     </i:Interaction.Triggers>

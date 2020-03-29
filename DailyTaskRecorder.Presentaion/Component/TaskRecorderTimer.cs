@@ -35,7 +35,7 @@ namespace DailyTaskRecorder.Presentaion.Component {
         TimeSpan nowtimespan;               // Startボタンが押されてから現在までの経過時間
         TimeSpan oldtimespan;               // 一時停止ボタンが押されるまでに経過した時間の蓄積
 
-        TimeInterval _timeInterval;
+        IntervalMinute _intervalMinite;
 
         Em_Mode _emMode = Em_Mode.Stop;
         public Em_Mode EmMode {
@@ -53,9 +53,7 @@ namespace DailyTaskRecorder.Presentaion.Component {
 
         #endregion
 
-        public TaskRecorderTimer(TimeInterval timeInterval) {
-            _timeInterval = timeInterval;
-
+        public TaskRecorderTimer() {
             // タイマーのインスタンスを生成
             dispatcherTimer = new DispatcherTimer(DispatcherPriority.Normal);
             dispatcherTimer.Interval = new TimeSpan(0, 0, 0, 0, 200); // 200msecごとに Tick を発火
@@ -70,36 +68,26 @@ namespace DailyTaskRecorder.Presentaion.Component {
             string time = oldtimespan.Add(nowtimespan).ToString(@"mm\:ss");
             DailyTaskRecorderTimerTickEventHandler(new TimerTickEventArgs(time, Em_TickKind.Normal));
 
-            if (_emMode == Em_Mode.Working) {
-                if (TimeSpan.Compare(oldtimespan.Add(nowtimespan), new TimeSpan(0, 0, _timeInterval.WorkInterval.Value)) >= 0) {
-                    StopTimer();
-                    DailyTaskRecorderTimerTickEventHandler(new TimerTickEventArgs(time, Em_TickKind.End));
-                    ResetTimer();
-                }
-            } else if (_emMode == Em_Mode.Break) {
-                if (TimeSpan.Compare(oldtimespan.Add(nowtimespan), new TimeSpan(0, 0, _timeInterval.BreakInterval.Value)) >= 0) {
-                    StopTimer();
-                    DailyTaskRecorderTimerTickEventHandler(new TimerTickEventArgs(time, Em_TickKind.End));
-                    ResetTimer();
-                }
+            if (TimeSpan.Compare(oldtimespan.Add(nowtimespan), new TimeSpan(0, 0, _intervalMinite.Value)) >= 0) {
+                StopTimer();
+                DailyTaskRecorderTimerTickEventHandler(new TimerTickEventArgs(time, Em_TickKind.End));
+                ResetTimer();
             }
         }
 
         /// <summary>
         /// インターバル値を設定する
         /// </summary>
-        /// <param name="pomodoroInterval"></param>
-        /// <param name="brekInterval"></param>
-        /// <param name="longBreakInterval"></param>
-        public void SetInterval(TimeInterval timeInterval) {
-            _timeInterval = timeInterval;
+        /// <param name="intervalMinite"></param>
+        public void SetInterval(IntervalMinute intervalMinite) {
+            _intervalMinite = intervalMinite;
         }
 
         /// <summary>
         /// タイマースタート
         /// </summary>
-        public void StartTimer(Em_Mode emMode) {
-            EmMode = emMode;
+        public void StartTimer(IntervalMinute intervalMinite) {
+            _intervalMinite = intervalMinite;
             StartTime = DateTime.Now;
             dispatcherTimer.Start();
         }

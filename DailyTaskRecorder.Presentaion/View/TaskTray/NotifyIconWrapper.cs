@@ -1,5 +1,6 @@
 ﻿using DailyTaskRecorder.Domain.DataTypeDef.Enum;
 using DailyTaskRecorder.Domain.Models.Setting;
+using DailyTaskRecorder.Presentaion.Command;
 using DailyTaskRecorder.Presentaion.Component;
 using DailyTaskRecorder.Presentaion.Repository;
 using DailyTaskRecorder.Presentaion.ViewModel;
@@ -29,18 +30,22 @@ namespace DailyTaskRecorder.Presentaion.View.TaskTray {
         TaskListViewModel _taskListVM;
         EndWorkViewModel _endWorkVM;
 
+        // リポジトリ
+        TimeIntervalRepository _repository;
+
         public NotifyIconWrapper(TaskListViewModel taskListVM) {
             InitializeComponent();
 
+            _repository = new TimeIntervalRepository();
+
             // タイマーのインスタンス生成
             _taskListVM = taskListVM;
-            TimeIntervalRepository repository = new TimeIntervalRepository();
-            TimeInterval timeInterval = repository.Load();
-            _taskRecorderTimer = new TaskRecorderTimer(timeInterval);
+            _taskRecorderTimer = new TaskRecorderTimer();
             _taskRecorderTimer.DailyTaskRecorderTimerTickEventHandler += new TaskRecorderTimer.TimerTickEventHandler(CallBackEventProgress);
 
             // Work 終了のインスタンス作成
             _endWorkVM = new EndWorkViewModel(_taskRecorderTimer);
+            _endWorkVM.PushedActionButtonCommand.DailyTaskRecorderActionChangeEventHandler += new WorkActionCommand.ActionChangeEventHandler(CallBackWorkAction);
 
             // コンテキストメニューのイベントを設定
             this.toolStripMenuItem_Exit.Click += this.toolStripMenuItem_Exit_Click;
@@ -70,20 +75,29 @@ namespace DailyTaskRecorder.Presentaion.View.TaskTray {
             } else {
                 if (_emMode == Em_Mode.Working) {
                     toolStripMenuItem_Start.Enabled = true;
-                    System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(NotifyIconWrapper));
-                    toolStripMenuItem_TimeText.Image = ((System.Drawing.Image)(resources.GetObject("Time")));
-                    EndWorkWindow endWorkWindow = new EndWorkWindow();
-                    endWorkWindow.WorkEndMessage.DataContext = _endWorkVM;
-                    endWorkWindow.ShowDialog();
-
                 } else if (_emMode == Em_Mode.Break) {
                     toolStripMenuItem_Break.Visible = true;
-                    System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(NotifyIconWrapper));
-                    toolStripMenuItem_TimeText.Image = ((System.Drawing.Image)(resources.GetObject("Time")));
-                    EndWorkWindow endWorkWindow = new EndWorkWindow();
-                    endWorkWindow.WorkEndMessage.DataContext = _endWorkVM;
-                    endWorkWindow.ShowDialog();
                 }
+                System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(NotifyIconWrapper));
+                toolStripMenuItem_TimeText.Image = ((System.Drawing.Image)(resources.GetObject("Time")));
+                EndWorkWindow endWorkWindow = new EndWorkWindow();
+                endWorkWindow.WorkEndMessage.DataContext = _endWorkVM;
+                endWorkWindow.ShowDialog();
+            }
+        }
+
+        /// <summary>
+        /// Mode 変更のコールバック
+        /// </summary>
+        /// <param name="emMode"></param>
+        private void CallBackWorkAction(Em_Mode emMode) {
+            EmMode = emMode;
+            if (EmMode == Em_Mode.Working) {
+                toolStripMenuItem_Start.Visible = false;
+                toolStripMenuItem_Break.Visible = true;
+            } else if (EmMode == Em_Mode.Break) {
+                toolStripMenuItem_Start.Visible = true;
+                toolStripMenuItem_Break.Visible = false;
             }
         }
 
@@ -103,11 +117,12 @@ namespace DailyTaskRecorder.Presentaion.View.TaskTray {
         /// <param name="sender">呼び出し元オブジェクト</param>
         /// <param name="e">イベントデータ</param>
         private void toolStripMenuItem_Start_Click(object sender, EventArgs e) {
-            EmMode = Em_Mode.Working;
+            
             _taskRecorderTimer.ResetTimer();
-            _taskRecorderTimer.StartTimer(_emMode);
-            toolStripMenuItem_Start.Visible = false;
-            toolStripMenuItem_Break.Visible = true;
+            TimeInterval timeInterval = _repository.Load();
+            _taskRecorderTimer.StartTimer(timeInterval.WorkInterval);
+
+            CallBackWorkAction(Em_Mode.Working);
 
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(NotifyIconWrapper));
             toolStripMenuItem_TimeText.Image = ((System.Drawing.Image)(resources.GetObject("Start")));
@@ -119,12 +134,12 @@ namespace DailyTaskRecorder.Presentaion.View.TaskTray {
         /// <param name="sender">呼び出し元オブジェクト</param>
         /// <param name="e">イベントデータ</param>
         private void toolStripMenuItem_Break_Click(object sender, EventArgs e) {
-            EmMode = Em_Mode.Break;
+            
             _taskRecorderTimer.ResetTimer();
-            _taskRecorderTimer.StartTimer(_emMode);
+            TimeInterval timeInterval = _repository.Load();
+            _taskRecorderTimer.StartTimer(timeInterval.BreakInterval);
 
-            toolStripMenuItem_Start.Visible = true;
-            toolStripMenuItem_Break.Visible = false;
+            CallBackWorkAction(Em_Mode.Break);
 
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(NotifyIconWrapper));
             toolStripMenuItem_TimeText.Image = ((System.Drawing.Image)(resources.GetObject("Break")));
@@ -149,8 +164,7 @@ namespace DailyTaskRecorder.Presentaion.View.TaskTray {
         private void toolStripMenuItem_Settings_Click(object sender, EventArgs e) {
 
             // 設定画面
-            TimeIntervalRepository repository = new TimeIntervalRepository();
-            TimeInterval timeInterval = repository.Load();
+            TimeInterval timeInterval = _repository.Load();
 
             var settingsVM = new SettingsViewModel(timeInterval);
 

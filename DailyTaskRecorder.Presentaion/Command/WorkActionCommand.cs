@@ -1,4 +1,7 @@
-﻿using DailyTaskRecorder.Presentaion.Component;
+﻿using DailyTaskRecorder.Domain.DataTypeDef.Enum;
+using DailyTaskRecorder.Domain.Models.Setting;
+using DailyTaskRecorder.Presentaion.Component;
+using DailyTaskRecorder.Presentaion.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +18,10 @@ namespace DailyTaskRecorder.Presentaion.Command {
             _TaskRecorderTimer = taskRecorderTimer;
         }
 
-        public event EventHandler CanExecuteChanged;
+        public event EventHandler CanExecuteChanged {
+            add { CommandManager.RequerySuggested += value; }
+            remove { CommandManager.RequerySuggested -= value; }
+        }
 
         public bool CanExecute(object parameter) {
             return true;
@@ -23,13 +29,25 @@ namespace DailyTaskRecorder.Presentaion.Command {
 
         public void Execute(object parameter) {
             string pushedButtonName = (string)parameter;
-            if (pushedButtonName == "StartPomodoro") {
-                _TaskRecorderTimer.StartTimer(Domain.DataTypeDef.Enum.Em_Mode.Working);
+
+            TimeIntervalRepository repository = new TimeIntervalRepository();
+            TimeInterval timeInterval = repository.Load();
+
+            if (pushedButtonName == "StartWork") {
+                _TaskRecorderTimer.StartTimer(timeInterval.WorkInterval);
+                DailyTaskRecorderActionChangeEventHandler(Em_Mode.Working);
 
             } else if (pushedButtonName == "Break") {
-                _TaskRecorderTimer.StartTimer(Domain.DataTypeDef.Enum.Em_Mode.Break);
+                _TaskRecorderTimer.StartTimer(timeInterval.BreakInterval);
+                DailyTaskRecorderActionChangeEventHandler(Em_Mode.Break);
 
             }
         }
+
+        #region Event Delegate
+        public delegate void ActionChangeEventHandler(Em_Mode emMode);
+        public event ActionChangeEventHandler DailyTaskRecorderActionChangeEventHandler;
+        #endregion
+
     }
 }
