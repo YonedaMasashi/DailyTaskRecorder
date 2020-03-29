@@ -34,7 +34,7 @@ namespace DailyTaskRecorder.Presentaion.Command {
         public void Execute(object parameter) {
             TaskListViewModel vm = parameter as TaskListViewModel;
 
-            var command = new TaskCreateCommand(vm.InputTaskName, vm.InputTaskName);
+            var command = new TaskCreateCommand(vm.InputTaskName, vm.InputCategory);
             var service = new TaskApplicationService(taskFactory, taskRepository);
 
             var taskRslt = service.Create(command);

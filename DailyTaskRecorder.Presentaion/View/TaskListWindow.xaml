@@ -6,9 +6,20 @@
     xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
     xmlns:local="clr-namespace:DailyTaskRecorder.Presentaion.View"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    d:DesignHeight="600"
-    d:DesignWidth="1000"
+    Title="Task List"
+    Width="800"
+    Height="600"
     mc:Ignorable="d">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.DeepPurple.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.Lime.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
             <i:InvokeCommandAction Command="{Binding FindAllTaskCommand}" CommandParameter="{Binding}" />
@@ -16,20 +27,20 @@
     </i:Interaction.Triggers>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="160" />
-            <RowDefinition Height="*" />
+            <RowDefinition Height="130" />
             <RowDefinition Height="50" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
         <!--  1行目  -->
-        <Grid Grid.Row="0" Margin="10,10,10,10">
+        <Grid Grid.Row="0" Margin="10,10,10,0">
             <Grid.RowDefinitions>
-                <RowDefinition Height="50" />
-                <RowDefinition Height="50" />
-                <RowDefinition Height="50" />
+                <RowDefinition Height="40" />
+                <RowDefinition Height="40" />
+                <RowDefinition Height="40" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="200" />
+                <ColumnDefinition Width="100" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <Label
@@ -44,7 +55,7 @@
                 Width="770"
                 Height="30"
                 HorizontalAlignment="Left"
-                VerticalAlignment="Center"
+                VerticalContentAlignment="Center"
                 Text="{Binding InputTaskName}" />
 
             <Label
@@ -59,7 +70,7 @@
                 Width="770"
                 Height="30"
                 HorizontalAlignment="Left"
-                VerticalAlignment="Center"
+                VerticalContentAlignment="Center"
                 Text="{Binding InputCategory}" />
 
             <Label
@@ -71,26 +82,19 @@
                 x:Name="CmbStatus"
                 Grid.Row="2"
                 Grid.Column="1"
-                Width="300"
+                Width="150"
                 Height="30"
                 HorizontalAlignment="Left"
-                VerticalAlignment="Center"
+                VerticalContentAlignment="Center"
                 ItemsSource="{Binding DispStatusList}"
                 SelectedValue="{Binding SelectedStatus}" />
 
         </Grid>
 
         <!--  2行目  -->
-        <DataGrid
-            x:Name="TaskListGrid"
-            Grid.Row="1"
-            HorizontalAlignment="Left"
-            ItemsSource="{Binding Path=TaskDataList}" />
-
-        <!--  3行目  -->
         <Button
             x:Name="BtnSubmit"
-            Grid.Row="2"
+            Grid.Row="1"
             Width="80"
             Height="30"
             Margin="10,10,10,10"
@@ -98,6 +102,36 @@
             Command="{Binding AddTaskCommand}"
             CommandParameter="{Binding}"
             Content="Add" />
+
+        <!--  3行目  -->
+        <DataGrid
+            x:Name="TaskListGrid"
+            Grid.Row="2"
+            Width="780"
+            Margin="10,10,10,10"
+            HorizontalAlignment="Left"
+            AutoGenerateColumns="False"
+            CanUserAddRows="False"
+            ItemsSource="{Binding Path=TaskDataList}">
+            <DataGrid.Columns>
+                <DataGridTextColumn
+                    Width="70"
+                    Binding="{Binding TaskId}"
+                    Header="Task id" />
+                <DataGridTextColumn
+                    Width="150"
+                    Binding="{Binding TaskName}"
+                    Header="Task name" />
+                <DataGridTextColumn
+                    Width="150"
+                    Binding="{Binding CategoryName}"
+                    Header="Category name" />
+                <DataGridTextColumn
+                    Width="80"
+                    Binding="{Binding Status}"
+                    Header="Status" />
+            </DataGrid.Columns>
+        </DataGrid>
 
     </Grid>
 </Window>
