@@ -70,6 +70,7 @@
     <Compile Include="Command\AddTaskCommand.cs" />
     <Compile Include="Command\FindAllTaskCommand.cs" />
     <Compile Include="Command\SettingSaveCommand.cs" />
+    <Compile Include="Command\WorkActionCommand.cs" />
     <Compile Include="Component\TaskRecorderTimer.cs" />
     <Compile Include="Converter\DomainVMConverter.cs" />
     <Compile Include="Framework\ViewModelBase.cs" />
@@ -80,9 +81,13 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Repository\TimeIntervalRepository.cs" />
+    <Compile Include="ViewModel\EndWorkViewModel.cs" />
     <Compile Include="ViewModel\SettingsViewModel.cs" />
     <Compile Include="ViewModel\TaskData.cs" />
     <Compile Include="ViewModel\TaskListViewModel.cs" />
+    <Compile Include="View\EndWorkWindow.xaml.cs">
+      <DependentUpon>EndWorkWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>
@@ -110,6 +115,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="View\EndWorkWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\SettingsWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

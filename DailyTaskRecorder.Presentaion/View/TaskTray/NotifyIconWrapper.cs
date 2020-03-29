@@ -27,11 +27,7 @@ namespace DailyTaskRecorder.Presentaion.View.TaskTray {
         /// </summary>
         TaskRecorderTimer _taskRecorderTimer;
         TaskListViewModel _taskListVM;
-
-        /// <summary>
-        /// 設定画面
-        /// </summary>
-        SettingsViewModel _settingsVM;
+        EndWorkViewModel _endWorkVM;
 
         public NotifyIconWrapper(TaskListViewModel taskListVM) {
             InitializeComponent();
@@ -42,6 +38,9 @@ namespace DailyTaskRecorder.Presentaion.View.TaskTray {
             TimeInterval timeInterval = repository.Load();
             _taskRecorderTimer = new TaskRecorderTimer(timeInterval);
             _taskRecorderTimer.DailyTaskRecorderTimerTickEventHandler += new TaskRecorderTimer.TimerTickEventHandler(CallBackEventProgress);
+
+            // Work 終了のインスタンス作成
+            _endWorkVM = new EndWorkViewModel(_taskRecorderTimer);
 
             // コンテキストメニューのイベントを設定
             this.toolStripMenuItem_Exit.Click += this.toolStripMenuItem_Exit_Click;
@@ -73,15 +72,17 @@ namespace DailyTaskRecorder.Presentaion.View.TaskTray {
                     toolStripMenuItem_Start.Enabled = true;
                     System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(NotifyIconWrapper));
                     toolStripMenuItem_TimeText.Image = ((System.Drawing.Image)(resources.GetObject("Time")));
-                    //EndPomodoroWindow endPomodoroWindow = new EndPomodoroWindow(_endPomodoroVM);
-                    //endPomodoroWindow.ShowDialog();
+                    EndWorkWindow endWorkWindow = new EndWorkWindow();
+                    endWorkWindow.WorkEndMessage.DataContext = _endWorkVM;
+                    endWorkWindow.ShowDialog();
 
                 } else if (_emMode == Em_Mode.Break) {
                     toolStripMenuItem_Break.Visible = true;
                     System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(NotifyIconWrapper));
                     toolStripMenuItem_TimeText.Image = ((System.Drawing.Image)(resources.GetObject("Time")));
-                    //EndPomodoroWindow endPomodoroWindow = new EndPomodoroWindow(_endPomodoroVM);
-                    //endPomodoroWindow.ShowDialog();
+                    EndWorkWindow endWorkWindow = new EndWorkWindow();
+                    endWorkWindow.WorkEndMessage.DataContext = _endWorkVM;
+                    endWorkWindow.ShowDialog();
                 }
             }
         }
