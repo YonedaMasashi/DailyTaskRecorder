@@ -29,17 +29,14 @@ namespace DailyTaskRecorder.Presentaion.Command {
 
         public void Execute(object parameter) {
             string pushedButtonName = (string)parameter;
-
-            TimeIntervalRepository repository = new TimeIntervalRepository();
-            TimeInterval timeInterval = repository.Load();
-
             if (pushedButtonName == "StartWork") {
-                _TaskRecorderTimer.StartTimer(timeInterval.WorkInterval);
                 DailyTaskRecorderActionChangeEventHandler(Em_Mode.Working);
 
             } else if (pushedButtonName == "Break") {
-                _TaskRecorderTimer.StartTimer(timeInterval.BreakInterval);
                 DailyTaskRecorderActionChangeEventHandler(Em_Mode.Break);
+
+            } else {
+                DailyTaskRecorderActionChangeEventHandler(Em_Mode.Stop);
 
             }
         }
