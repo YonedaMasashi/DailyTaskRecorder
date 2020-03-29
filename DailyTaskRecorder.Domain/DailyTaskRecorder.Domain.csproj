@@ -51,6 +51,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataTypeDef\Enum\Em_Mode.cs" />
+    <Compile Include="Models\Setting\IntervalMinute.cs" />
+    <Compile Include="Models\Setting\ITimeIntervalRepository.cs" />
+    <Compile Include="Models\Setting\TimeInterval.cs" />
     <Compile Include="Models\Task\CategoryName.cs" />
     <Compile Include="Models\Task\ITaskFactory.cs" />
     <Compile Include="Models\Task\ITaskRepository.cs" />

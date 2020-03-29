@@ -16,10 +16,10 @@ using System.Windows.Shapes;
 
 namespace DailyTaskRecorder.Presentaion.View {
     /// <summary>
-    /// TaskListWindow.xaml の相互作用ロジック
+    /// SettingsWindow.xaml の相互作用ロジック
     /// </summary>
-    public partial class TaskListWindow : Window {
-        public TaskListWindow() {
+    public partial class SettingsWindow : Window {
+        public SettingsWindow() {
             InitializeComponent();
         }
     }

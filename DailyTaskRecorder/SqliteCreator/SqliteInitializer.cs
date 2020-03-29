@@ -14,19 +14,15 @@ using System.Windows;
 namespace DailyTaskRecorder.SqliteCreator {
     class SqliteInitializer {
         
-        public static Window Create() {
+        public static TaskListViewModel Create() {
             string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             var provider = new DatabaseConnectionProvider(connectionString);
 
             ITaskFactory taskFactory = new SqlTaskFactory(provider);
             ITaskRepository taskRepository = new SqlTaskRepository(provider);
 
-            TaskListViewModel taskListVM = new TaskListViewModel(taskFactory, taskRepository);
+            return new TaskListViewModel(taskFactory, taskRepository);
 
-            TaskListWindow window = new TaskListWindow();
-            window.DataContext = taskListVM;
-
-            return window;
         }
     }
 }

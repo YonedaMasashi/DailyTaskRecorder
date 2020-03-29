@@ -48,6 +48,7 @@
                 Grid.Column="0"
                 VerticalAlignment="Center"
                 Content="Name:" />
+
             <TextBox
                 x:Name="TxtInputTaskName"
                 Grid.Row="0"

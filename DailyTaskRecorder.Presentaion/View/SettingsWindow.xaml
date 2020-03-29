@@ -1,0 +1,104 @@
+﻿<Window
+    x:Class="DailyTaskRecorder.Presentaion.View.SettingsWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
+    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+    xmlns:local="clr-namespace:DailyTaskRecorder.Presentaion.View"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="Settings"
+    Width="190"
+    Height="130"
+    ResizeMode="NoResize"
+    mc:Ignorable="d">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.DeepPurple.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.Lime.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid>
+
+        <StackPanel Orientation="Vertical">
+            <Grid x:Name="IntervalData">
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition Height="5" />
+                    <RowDefinition Height="40" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="120" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Label
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    Content="Work Interval" />
+
+                <TextBox
+                    x:Name="TxtWorkInterval"
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    Width="30"
+                    Height="20"
+                    Margin="0,0,10,0"
+                    HorizontalAlignment="Right"
+                    Text="{Binding Path=WorkInterval}" />
+
+                <Label
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    Content="Break Interval" />
+                <TextBox
+                    x:Name="TxtBreakInterval"
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    Width="30"
+                    Height="20"
+                    Margin="0,0,10,0"
+                    HorizontalAlignment="Right"
+                    Text="{Binding Path=BreakInterval}" />
+
+                <!--
+                <Label
+                    Grid.Row="2"
+                    Grid.Column="0"
+                    Content="Long Break Interval" />
+                <TextBox
+                    x:Name="TxtLongBreakInterval"
+                    Grid.Row="2"
+                    Grid.Column="1"
+                    Width="30"
+                    Height="20"
+                    Margin="0,0,10,0"
+                    HorizontalAlignment="Right"
+                    Text="{Binding Path=LongBreakInterval}" />
+                -->
+
+                <Button
+                    Grid.Row="4"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="2"
+                    Width="80"
+                    Height="30"
+                    Content="Save">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Click">
+                            <!--  コマンド実行  -->
+                            <i:InvokeCommandAction Command="{Binding PushedSettingSaveCommand}" CommandParameter="{Binding}" />
+                            <!--  ウィンドウをクローズ  -->
+                            <ei:CallMethodAction MethodName="Close" TargetObject="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </Button>
+            </Grid>
+        </StackPanel>
+    </Grid>
+</Window>
