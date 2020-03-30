@@ -45,7 +45,7 @@ namespace DailyTaskRecorder.Presentaion.View.TaskTray {
 
             // Work 終了のインスタンス作成
             _endWorkVM = new EndWorkViewModel(_taskRecorderTimer);
-            _endWorkVM.PushedActionButtonCommand.DailyTaskRecorderActionChangeEventHandler += new WorkActionCommand.ActionChangeEventHandler(CallBackWorkAction);
+            _endWorkVM.DailyTaskRecorderActionChangeEventHandler += new EndWorkViewModel.ActionChangeEventHandler(CallBackStartAction);
 
             // コンテキストメニューのイベントを設定
             this.toolStripMenuItem_Exit.Click += this.toolStripMenuItem_Exit_Click;
@@ -75,13 +75,15 @@ namespace DailyTaskRecorder.Presentaion.View.TaskTray {
             } else {
                 if (_emMode == Em_Mode.Working) {
                     toolStripMenuItem_Start.Enabled = true;
+                    _endWorkVM.EndMessage = "Working Finish.";
                 } else if (_emMode == Em_Mode.Break) {
                     toolStripMenuItem_Break.Visible = true;
+                    _endWorkVM.EndMessage = "Break Finish.";
                 }
                 System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(NotifyIconWrapper));
                 toolStripMenuItem_TimeText.Image = ((System.Drawing.Image)(resources.GetObject("Time")));
                 EndWorkWindow endWorkWindow = new EndWorkWindow();
-                endWorkWindow.WorkEndMessage.DataContext = _endWorkVM;
+                endWorkWindow.DataContext = _endWorkVM;
                 endWorkWindow.ShowDialog();
             }
         }
@@ -90,7 +92,7 @@ namespace DailyTaskRecorder.Presentaion.View.TaskTray {
         /// Mode 変更のコールバック
         /// </summary>
         /// <param name="emMode"></param>
-        private void CallBackWorkAction(Em_Mode emMode) {
+        private void CallBackStartAction(Em_Mode emMode) {
             EmMode = emMode;
             if (EmMode == Em_Mode.Working) {
                 _taskRecorderTimer.ResetTimer();
@@ -100,7 +102,8 @@ namespace DailyTaskRecorder.Presentaion.View.TaskTray {
                 toolStripMenuItem_Start.Visible = false;
                 toolStripMenuItem_Break.Visible = true;
 
-                System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(NotifyIconWrapper));
+                System.ComponentModel.ComponentResourceManager resources = 
+                    new System.ComponentModel.ComponentResourceManager(typeof(NotifyIconWrapper));
                 toolStripMenuItem_TimeText.Image = ((System.Drawing.Image)(resources.GetObject("Start")));
 
             } else if (EmMode == Em_Mode.Break) {
@@ -111,7 +114,8 @@ namespace DailyTaskRecorder.Presentaion.View.TaskTray {
                 toolStripMenuItem_Start.Visible = true;
                 toolStripMenuItem_Break.Visible = false;
 
-                System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(NotifyIconWrapper));
+                System.ComponentModel.ComponentResourceManager resources = 
+                    new System.ComponentModel.ComponentResourceManager(typeof(NotifyIconWrapper));
                 toolStripMenuItem_TimeText.Image = ((System.Drawing.Image)(resources.GetObject("Break")));
 
             } else {
@@ -137,7 +141,7 @@ namespace DailyTaskRecorder.Presentaion.View.TaskTray {
         /// <param name="sender">呼び出し元オブジェクト</param>
         /// <param name="e">イベントデータ</param>
         private void toolStripMenuItem_Start_Click(object sender, EventArgs e) {
-            CallBackWorkAction(Em_Mode.Working);
+            CallBackStartAction(Em_Mode.Working);
         }
 
         /// <summary>
@@ -146,7 +150,7 @@ namespace DailyTaskRecorder.Presentaion.View.TaskTray {
         /// <param name="sender">呼び出し元オブジェクト</param>
         /// <param name="e">イベントデータ</param>
         private void toolStripMenuItem_Break_Click(object sender, EventArgs e) {
-            CallBackWorkAction(Em_Mode.Break);
+            CallBackStartAction(Em_Mode.Break);
         }
 
         /// <summary>

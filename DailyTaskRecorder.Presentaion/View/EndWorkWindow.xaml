@@ -7,10 +7,10 @@
     xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
     xmlns:local="clr-namespace:DailyTaskRecorder.Presentaion.View"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    x:Name="endWorkWindow"
     Title="End Work"
     Width="300"
     Height="160"
+    ResizeMode="NoResize"
     mc:Ignorable="d">
 
     <Window.Resources>
@@ -24,7 +24,7 @@
         </ResourceDictionary>
     </Window.Resources>
 
-    <Grid x:Name="WorkEndMessage">
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="70" />
             <RowDefinition Height="40" />
@@ -32,12 +32,13 @@
 
         <!--  0行目  -->
         <TextBlock
-            x:Name="EndMessage"
             Grid.Row="0"
             Grid.Column="0"
             Margin="10,10,10,0"
             HorizontalAlignment="Center"
-            VerticalAlignment="Center" />
+            VerticalAlignment="Center"
+            FontSize="20"
+            Text="{Binding EndMessage}" />
 
         <!--  1行目  -->
         <Grid Grid.Row="1" Grid.Column="0">
@@ -50,36 +51,16 @@
                 <Button
                     x:Name="BtnStartWork"
                     Margin="0,0,0,0"
-                    Content="Start">
-                    <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="Click">
-                            <!--  コマンド実行  -->
-                            <i:InvokeCommandAction Command="{Binding PushedActionButtonCommand}" CommandParameter="StartWork" />
-                            <!--  Window の DialogResult を設定して、Window を閉じる  -->
-                            <ei:ChangePropertyAction
-                                PropertyName="DialogResult"
-                                TargetObject="{Binding ElementName=endWorkWindow}"
-                                Value="True" />
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>
-                </Button>
+                    Command="{Binding StartCommand}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"
+                    Content="Start" />
 
                 <Button
                     x:Name="BtnBreak"
                     Margin="10,0,0,0"
-                    Content="Break">
-                    <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="Click">
-                            <!--  コマンド実行  -->
-                            <i:InvokeCommandAction Command="{Binding PushedActionButtonCommand}" CommandParameter="Break" />
-                            <!--  Window の DialogResult を設定して、Window を閉じる  -->
-                            <ei:ChangePropertyAction
-                                PropertyName="DialogResult"
-                                TargetObject="{Binding ElementName=endWorkWindow}"
-                                Value="True" />
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>
-                </Button>
+                    Command="{Binding BreakCommand}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"
+                    Content="Break" />
             </StackPanel>
         </Grid>
     </Grid>
